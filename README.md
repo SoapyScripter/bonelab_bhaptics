@@ -1,6 +1,8 @@
 # Bonelab bHaptics
 Made by soapyscripter
+
 a branch based on the mod made by floh (https://github.com/floh-bhaptics/Bonelab_bhaptics/tree/master)
+
 all credits to floh
 
 # New Features
