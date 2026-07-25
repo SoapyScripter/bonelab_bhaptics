@@ -1,0 +1,74 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+	<AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+	<AppendRuntimeIdentifierToOutputPath>false</AppendRuntimeIdentifierToOutputPath>
+    <OutputPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\Mods\</OutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DebugType>none</DebugType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="0Harmony">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\net6\0Harmony.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\Il2CppAssemblies\Assembly-CSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="bHapticsLib">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\net6\bHapticsLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="BoneLib">
+      <HintPath>BoneLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Il2CppInterop.Runtime">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\net6\Il2CppInterop.Runtime.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2Cppmscorlib">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\Il2CppAssemblies\Il2Cppmscorlib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Il2CppSLZ.Marrow">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\Il2CppAssemblies\Il2CppSLZ.Marrow.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MelonLoader">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\net6\MelonLoader.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\Il2CppAssemblies\UnityEngine.CoreModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="UnityEngine.PhysicsModule">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\MelonLoader\Il2CppAssemblies\UnityEngine.PhysicsModule.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+	<Reference Include="BoneLib">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\Mods\BoneLib.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+	<Reference Include="LabFusion">
+      <HintPath>C:\Program Files\Oculus\Software\Software\stress-level-zero-inc-bonelab\Mods\LabFusion.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+  </ItemGroup>
+
+  <Target Name="PostBuild" AfterTargets="PostBuildEvent">
+    <Exec Command="XCOPY &quot;$(ProjectDir)bHaptics\&quot; &quot;$(TargetDir)bHaptics\&quot; /S /Y" />
+  </Target>
+  
+</Project>
