@@ -30,7 +30,6 @@ namespace Bonelab_bhaptics
     {
         public static TactsuitVR tactsuitVr = null!;
         public static bool playerRightHanded = true;
-        public static RigManager myRigManager = null;
 
         public static bool disablefusion = false;
 
@@ -57,20 +56,6 @@ namespace Bonelab_bhaptics
 
         }
 
-        [HarmonyPatch(typeof(RigManager), "Awake", new Type[] { })]
-        public class bhaptics_GameControlRigManager
-        {
-            [HarmonyPostfix]
-            public static void Postfix(RigManager __instance)
-            {
-                if (myRigManager == null)
-                {
-                    tactsuitVr.LOG("Player RigManager initialized... " + __instance.name);
-                    myRigManager = __instance;
-                }
-            }
-        }
-
         private void OnPostFireGun(Gun gun)
         {
             bool rightHanded = false;
@@ -83,7 +68,7 @@ namespace Bonelab_bhaptics
 
             foreach (var hand in gun.triggerGrip.attachedHands)
             {
-                if (myRigManager.ControllerRig != hand.Controller.contRig) { return; }
+                if (Player.ControllerRig != hand.Controller.contRig) { return; }
                 if (hand.handedness == Il2CppSLZ.Marrow.Interaction.Handedness.RIGHT) { rightHanded = true; break; }
             }
             
@@ -150,12 +135,9 @@ namespace Bonelab_bhaptics
             [HarmonyPostfix]
             public static void Postfix(PlayerDamageReceiver __instance, Il2CppSLZ.Marrow.Combat.Attack attack)
             {
-                if (myRigManager != null)
+                if (Player.RigManager != null)
                 {
-                    if (__instance.health._rigManager != myRigManager) return;
-                    float armDamage = 0.2f;
-                    float headDamage = 0.8f;
-                    float bodyDamage = 0.5f;
+                    if (__instance.health._rigManager != Player.RigManager) return;
                     string damagePattern;
                     bool hapticsApplied = false;
                     switch (attack.attackType)
@@ -179,10 +161,8 @@ namespace Bonelab_bhaptics
                             damagePattern = "Impact";
                             break;
                     }
-                    float absoluteDamage = Math.Abs(attack.damage);
                     if (__instance.bodyPart == PlayerDamageReceiver.BodyPart.Head)
                     {
-                        absoluteDamage *= headDamage;
                         if (tactsuitVr.faceConnected)
                         {
                             tactsuitVr.PlaybackHaptics("Headshot_F");
@@ -191,7 +171,6 @@ namespace Bonelab_bhaptics
                     }
                     if ((__instance.bodyPart == PlayerDamageReceiver.BodyPart.ArmLowerLf) || (__instance.bodyPart == PlayerDamageReceiver.BodyPart.ArmUpperLf))
                     {
-                        absoluteDamage *= armDamage;
                         if (tactsuitVr.armsConnected)
                         {
                             tactsuitVr.PlaybackHaptics("Recoil_L");
@@ -200,7 +179,6 @@ namespace Bonelab_bhaptics
                     }
                     if ((__instance.bodyPart == PlayerDamageReceiver.BodyPart.ArmLowerRt) || (__instance.bodyPart == PlayerDamageReceiver.BodyPart.ArmUpperRt))
                     {
-                        absoluteDamage *= armDamage;
                         if (tactsuitVr.armsConnected)
                         {
                             tactsuitVr.PlaybackHaptics("Recoil_R");
@@ -211,9 +189,8 @@ namespace Bonelab_bhaptics
                     {
                         KeyValuePair<float, float> angleShift;
                         if (attack.collider != null) { angleShift = getAngleAndShift(__instance.transform, attack.collider.transform.position); }
-                        else { angleShift = getAngleAndShift(__instance.transform, attack.direction); }
+                        else { angleShift = getAngleAndShift(__instance.transform, attack.origin); }
                         tactsuitVr.PlayBackHit(damagePattern, angleShift.Key, angleShift.Value);
-                        absoluteDamage *= bodyDamage;
                     }
                 }
             }
@@ -228,12 +205,12 @@ namespace Bonelab_bhaptics
             {
                 if (__instance.isInUIMode) return;
                 if (hand == null) return;
-                if (myRigManager != null)
+                if (Player.RigManager != null)
                 {
-                    if (hand.manager != myRigManager) return;
+                    if (hand.manager != Player.RigManager) return;
                     string name = "BackCt";
 
-                    foreach (var slot in myRigManager.inventory.bodySlots)
+                    foreach (var slot in Player.RigManager.inventory.bodySlots)
                     {
                         if (slot.inventorySlotReceiver == __instance)
                         {
@@ -260,12 +237,12 @@ namespace Bonelab_bhaptics
                 Hand hand = host.GetLastHand();
                 if (__instance.isInUIMode) return;
                 if (hand == null) return;
-                if (myRigManager != null)
+                if (Player.RigManager != null)
                 {
-                    if (hand.manager != myRigManager) return;
+                    if (hand.manager != Player.RigManager) return;
                     string name = "BackCt";
 
-                    foreach (var slot in myRigManager.inventory.bodySlots)
+                    foreach (var slot in Player.RigManager.inventory.bodySlots)
                     {
                         if (slot.inventorySlotReceiver == __instance)
                         {
@@ -285,9 +262,9 @@ namespace Bonelab_bhaptics
 
         private void OnPlayerDeath(RigManager rm)
         {
-            if (myRigManager != null)
+            if (Player.RigManager != null)
             {
-                if (rm != myRigManager) return;
+                if (rm != Player.RigManager) return;
                 tactsuitVr.StopThreads();
             }
         }
@@ -298,9 +275,9 @@ namespace Bonelab_bhaptics
             [HarmonyPostfix]
             public static void Postfix(Player_Health __instance)
             {
-                if (myRigManager != null)
+                if (Player.RigManager != null)
                 {
-                    if (__instance._rigManager != myRigManager) return;
+                    if (__instance._rigManager != Player.RigManager) return;
                     if (__instance.curr_Health <= 0.3f * __instance.max_Health) tactsuitVr.StartHeartBeat();
                     else tactsuitVr.StopHeartBeat();
                 }
@@ -309,9 +286,9 @@ namespace Bonelab_bhaptics
 
         private void OnSwitchAvatarPostfix(Avatar avatar)
         {
-            if (myRigManager != null)
+            if (Player.RigManager != null)
             {
-                if (avatar != myRigManager.avatar) return;
+                if (avatar != Player.Avatar) return;
                 tactsuitVr.PlaybackHaptics("SwitchAvatar");
             }
         }
