@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using LabFusion.Network;
 using MelonLoader;
 
 namespace MyBhapticsTactsuit
@@ -85,8 +84,6 @@ namespace MyBhapticsTactsuit
 
         public void PlaybackHaptics(String key, float intensity = 1.0f, float duration = 1.0f)
         {
-            if (MelonBase.FindMelon("LabFusion", "Lakatrazz") != null && NetworkInfo.HasServer && Bonelab_bhaptics.Bonelab_bhaptics.disablefusion == true) return;
-
             if (FeedbackMap.ContainsKey(key))
             {
                 bHapticsLib.ScaleOption scaleOption = new bHapticsLib.ScaleOption(intensity, duration);

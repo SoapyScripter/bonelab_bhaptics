@@ -5,10 +5,6 @@ using Il2CppSLZ.Bonelab;
 using Il2CppSLZ.Marrow;
 using Il2CppSLZ.Marrow.Data;
 using Il2CppSLZ.VRMK;
-using LabFusion.Entities;
-using LabFusion.Network;
-using LabFusion.Player;
-using LabFusion.RPC;
 using MelonLoader;
 using MyBhapticsTactsuit;
 using System;
@@ -31,7 +27,6 @@ namespace Bonelab_bhaptics
         public static TactsuitVR tactsuitVr = null!;
         public static bool playerRightHanded = true;
 
-        public static bool disablefusion = false;
 
         public override void OnInitializeMelon()
         {
@@ -46,8 +41,6 @@ namespace Bonelab_bhaptics
             myPage.CreateBool("Suit Connected", Color.white, !tactsuitVr.suitDisabled, (value) => tactsuitVr.suitDisabled = value);
             myPage.CreateBool("Visor Connected", Color.white, tactsuitVr.faceConnected, (value) => tactsuitVr.faceConnected = value);
             myPage.CreateBool("Sleeves Connected", Color.white, tactsuitVr.armsConnected, (value) => tactsuitVr.armsConnected = value);
-
-            myPage.CreateBool("Disable In Fusion", Color.blue, disablefusion, (value) => disablefusion = value);
 
 
             myPage.CreateFunction("Create New Tactsuit", Color.yellow, () => tactsuitVr = new TactsuitVR());

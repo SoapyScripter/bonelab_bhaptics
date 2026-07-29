@@ -27,6 +27,10 @@ Removes holstering from other players in fusion
 
 Removes shooting haptics from other players in fusion
 
+Fixed haptic damage feedback having a nonesense direction
+
+Fixed taking double damage
+
 
 # Known Bugs/Plan Features
 Fusion Touch Haptics
