@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using MelonLoader;
+using MelonLoader.Utils;
 
 namespace MyBhapticsTactsuit
 {
@@ -57,7 +58,12 @@ namespace MyBhapticsTactsuit
 
         void RegisterAllTactFiles()
         {
-            string configPath = Directory.GetCurrentDirectory() + "\\Mods\\bHaptics";
+            string configPath = MelonEnvironment.ModsDirectory + "\\bHaptics";
+            if (!Directory.Exists(configPath))
+            {
+                LOG("Could not find tact files!");
+                return;
+            }
             DirectoryInfo d = new DirectoryInfo(configPath);
             FileInfo[] Files = d.GetFiles("*.tact", SearchOption.AllDirectories);
             for (int i = 0; i < Files.Length; i++)
