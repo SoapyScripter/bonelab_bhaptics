@@ -64,7 +64,7 @@ namespace Bonelab_bhaptics
                 if (Player.ControllerRig != hand.Controller.contRig) { return; }
                 if (hand.handedness == Il2CppSLZ.Marrow.Interaction.Handedness.RIGHT) { rightHanded = true; break; }
             }
-            
+
             if (!twoHanded)
             {
                 foreach (var grip in gun.otherGrips)

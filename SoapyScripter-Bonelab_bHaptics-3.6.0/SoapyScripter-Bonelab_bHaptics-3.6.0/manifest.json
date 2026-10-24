@@ -1,0 +1,7 @@
+{
+	"name": "Bonelab_bHaptics",
+	"version_number": "3.6.0",
+	"description": "A mod for adding bHaptics support into the game",
+	"website_url": "",
+	"dependencies": ["bonelib-BoneLib-3.2.1"]
+}
